@@ -24,4 +24,8 @@ int get_number_of_neighbours(int i, int j, const StateMatrix &state);
 bool next_node_state(int i, int j, const StateMatrix &state);
 
 StateMatrix next_state(const StateMatrix &state);
+StateMatrix next_state_omp(const StateMatrix &state);
+
+void event_loop(int num_of_iters);
+void event_loop_omp(int num_of_iters);
 #endif

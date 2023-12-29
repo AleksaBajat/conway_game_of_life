@@ -1,4 +1,5 @@
 #include "../include/state.h"
+#include <iostream>
 
 StateMatrix init_state() {
     auto matrix = StateMatrix{};
@@ -81,7 +82,49 @@ bool next_node_state(const int i, const int j, const StateMatrix &state) {
 
 StateMatrix next_state(const StateMatrix &state) {
     StateMatrix new_state{};
-#pragma omp parallel for schedule(dynamic)
+    for (int i = 0; i < map_size; ++i) {
+        for (int j = 0; j < map_size; ++j) {
+            new_state[i][j] = next_node_state(i, j, state);
+        }
+    }
+    return new_state;
+}
+
+void event_loop(int num_of_iters) {
+    StateMatrix state = init_state();
+    int iter_count = 0;
+//    print_state(state, iter_count);
+    while (iter_count++ != num_of_iters) {
+        state = next_state(state);
+//        print_state(state, iter_count);
+    }
+}
+
+
+void event_loop_omp(int num_of_iters) {
+    StateMatrix state = init_state();
+    int iter_count = 0;
+//    print_state(state, iter_count);
+    while (iter_count++ != num_of_iters) {
+        state = next_state_omp(state);
+//        print_state(state, iter_count);
+    }
+}
+
+
+StateMatrix next_state_omp(const StateMatrix &state) {
+    StateMatrix new_state{};
+#pragma omp parallel for
+    for (int i = 0; i < map_size; ++i) {
+        for (int j = 0; j < map_size; ++j) {
+            new_state[i][j] = next_node_state(i, j, state);
+        }
+    }
+    return new_state;
+}
+
+StateMatrix next_state_mpi(const StateMatrix &state) {
+    StateMatrix new_state{};
     for (int i = 0; i < map_size; ++i) {
         for (int j = 0; j < map_size; ++j) {
             new_state[i][j] = next_node_state(i, j, state);
