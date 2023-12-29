@@ -1,5 +1,6 @@
-#include "include/state.h"
-#include <catch2/catch_test_macros.hpp>
+#define CATCH_CONFIG_MAIN
+#include "../include/state.h"
+#include "catch2/catch_test_macros.hpp"
 
 
 TEST_CASE("neighbours", "[neighbours]"){
@@ -11,8 +12,11 @@ TEST_CASE("neighbours", "[neighbours]"){
 
     SECTION("central"){
         int num = get_number_of_neighbours(1, 1, state);
-
         REQUIRE(num == 6);
     }
 
+    SECTION("edge"){
+        int num = get_number_of_neighbours(0, 0, state);
+        REQUIRE(num == 2);
+    }
 }
