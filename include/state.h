@@ -15,11 +15,13 @@ using StateMatrix = std::array<std::array<bool, map_size>, map_size>;
 
 StateMatrix init_state();
 
-void print_state(const StateMatrix &matrix);
+void print_state(const StateMatrix &matrix, int iter_count = -1);
 
-int get_neighbour(int i, int j, const StateMatrix &previous_state, int di, int dj);
+int get_neighbour(int i, int j, const StateMatrix &state, int di, int dj);
 
-int get_number_of_neighbours(int i, int j, const StateMatrix &previous_state);
+int get_number_of_neighbours(int i, int j, const StateMatrix &state);
 
-bool next_state(int i, int j, const StateMatrix &previous_state);
+bool next_node_state(int i, int j, const StateMatrix &state);
+
+StateMatrix next_state(const StateMatrix &state);
 #endif

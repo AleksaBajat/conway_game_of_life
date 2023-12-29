@@ -32,10 +32,12 @@ StateMatrix init_state() {
     return matrix;
 }
 
-void print_state(const StateMatrix &matrix) {
+void print_state(const StateMatrix &matrix, int iter_count) {
     const std::string RED = "\033[31m";
     const std::string GREEN = "\033[32m";
+    const std::string BLUE = "\033[34m";
     const std::string RESET = "\033[0m";
+    std::cout << RED << "################" << BLUE << iter_count << RED << "#################" << RESET << std::endl;
     for (int i = 0; i < map_size; i++) {
         for (int j = 0; j < map_size; j++) {
             // Print X in red and O in green
@@ -44,10 +46,9 @@ void print_state(const StateMatrix &matrix) {
 
         std::cout << "\n";
     }
-    std::cout << RED << "##################################" << RESET << std::endl;
 }
 
-int get_neighbour(const int i, const int j, const StateMatrix &previous_state, const int di, const int dj) {
+int get_neighbour(const int i, const int j, const StateMatrix &state, const int di, const int dj) {
     int new_i = i + di;
     int new_j = j + dj;
 
@@ -55,25 +56,36 @@ int get_neighbour(const int i, const int j, const StateMatrix &previous_state, c
         return 0;
     }
 
-    const int result = previous_state[new_i][new_j] ? 1 : 0;
+    const int result = state[new_i][new_j] ? 1 : 0;
     return result;
 }
 
-int get_number_of_neighbours(const int i, const int j, const StateMatrix &previous_state) {
+int get_number_of_neighbours(const int i, const int j, const StateMatrix &state) {
     int distances[8][2] = {{1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}};
     int number_of_neighbours = 0;
     for (auto & distance : distances)
-        number_of_neighbours += get_neighbour(i, j, previous_state, distance[0], distance[1]);
+        number_of_neighbours += get_neighbour(i, j, state, distance[0], distance[1]);
 
     return number_of_neighbours;
 }
 
-bool next_state(const int i, const int j, const StateMatrix &previous_state) {
-    int number_of_neighbours = get_number_of_neighbours(i, j, previous_state);
+bool next_node_state(const int i, const int j, const StateMatrix &state) {
+    int number_of_neighbours = get_number_of_neighbours(i, j, state);
 
-    if (previous_state[i][j]) {
+    if (state[i][j]) {
         return number_of_neighbours == 2 || number_of_neighbours == 3;
     }
 
     return number_of_neighbours == 3;
+}
+
+StateMatrix next_state(const StateMatrix &state) {
+    StateMatrix new_state{};
+#pragma omp parallel for schedule(dynamic)
+    for (int i = 0; i < map_size; ++i) {
+        for (int j = 0; j < map_size; ++j) {
+            new_state[i][j] = next_node_state(i, j, state);
+        }
+    }
+    return new_state;
 }

@@ -1,24 +1,17 @@
 #include "include/state.h"
+#define ITER_COUNT 100
 
-[[noreturn]] void event_loop() {
-    StateMatrix previous_state = init_state();
-    print_state(previous_state);
-    while (true) {
-        StateMatrix new_state{};
-        #pragma omp parallel for schedule(dynamic)
-        for (int i = 0; i < map_size; ++i) {
-            for (int j = 0; j < map_size; ++j) {
-                new_state[i][j] = next_state(i, j, previous_state);
-            }
-        }
-        print_state(new_state);
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        previous_state = new_state;
+void event_loop() {
+    StateMatrix state = init_state();
+    int iter_count = 0;
+    print_state(state, iter_count);
+    while (iter_count++ != ITER_COUNT) {
+        state = next_state(state);
+        print_state(state, iter_count);
     }
 }
 
 int main() {
-    std::cout << "HELLO WORLD" << std::endl;
     event_loop();
     return 0;
 }
