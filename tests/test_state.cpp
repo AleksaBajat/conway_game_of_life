@@ -22,8 +22,23 @@ TEST_CASE("neighbours", "[neighbours]"){
 }
 
 bool states_equal(StateMatrix current, StateMatrix next){
-    for(int i = 0; i<map_size; i++){
-        for(int j=0; j<map_size;j++){
+    if(current.empty() || next.empty()){
+        if(current.empty() && next.empty()){
+            return true;
+        }
+
+        return false;
+    }
+
+    if(current.size() != next.size() || current[0].size() != next[0].size()){
+        return false;
+    }
+
+    unsigned long height = current.size();
+    unsigned long width = next.size();
+
+    for(int i = 0; i<height; i++){
+        for(int j=0; j<width;j++){
             if(current[i][j] != next[i][j]){
                 return false;
             }

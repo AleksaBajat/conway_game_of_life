@@ -1,8 +1,9 @@
 #include "../include/state.h"
 #include <iostream>
 
-StateMatrix init_state() {
-    auto matrix = StateMatrix{};
+StateMatrix init_state(const int height, const int width) {
+    auto matrix = StateMatrix(height, std::vector<bool>(width, false));
+    std::string state_file = "state" + std::to_string(height) + "x" + std::to_string(width) + ".txt";
     if (std::filesystem::exists(state_file)) {
         std::string line;
         std::ifstream state(state_file);
@@ -21,8 +22,8 @@ StateMatrix init_state() {
         state.close();
     } else {
         std::ofstream state(state_file);
-        for (int i = 0; i < map_size; i++) {
-            for (int j = 0; j < map_size; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 state << "X ";
             }
             state << "\n";
@@ -33,16 +34,23 @@ StateMatrix init_state() {
     return matrix;
 }
 
-void print_state(const StateMatrix &matrix, int iter_count) {
+void print_state(const StateMatrix &state, int iter_count) {
+    if(state.empty() || state[0].empty()){
+        std::cout << "EMPTY" << std::endl;
+        return;
+    }
+    const unsigned long height = state.size();
+    const unsigned long width = state[0].size();
     const std::string RED = "\033[31m";
     const std::string GREEN = "\033[32m";
     const std::string BLUE = "\033[34m";
     const std::string RESET = "\033[0m";
-    std::cout << RED << "################" << BLUE << iter_count << RED << "#################" << RESET << std::endl;
-    for (int i = 0; i < map_size; i++) {
-        for (int j = 0; j < map_size; j++) {
+    std::string bounds(width - 2, '#');
+    std::cout << RED << bounds << BLUE << iter_count << RED << bounds << RESET << std::endl;
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
             // Print X in red and O in green
-            std::cout << (matrix[i][j] ? GREEN : RED) << (matrix[i][j] ? "O " : "X ") << RESET;
+            std::cout << (state[i][j] ? GREEN : RED) << (state[i][j] ? "O " : "X ") << RESET;
         }
 
         std::cout << "\n";
@@ -50,10 +58,12 @@ void print_state(const StateMatrix &matrix, int iter_count) {
 }
 
 int get_neighbour(const int i, const int j, const StateMatrix &state, const int di, const int dj) {
+    const unsigned long height = state.size();
+    const unsigned long width = state[0].size();
     int new_i = i + di;
     int new_j = j + dj;
 
-    if(new_i > map_size - 1 || new_i < 0 || new_j > map_size - 1 || new_j < 0){
+    if(new_i > height - 1 || new_i < 0 || new_j > width - 1 || new_j < 0){
         return 0;
     }
 
@@ -81,54 +91,52 @@ bool next_node_state(const int i, const int j, const StateMatrix &state) {
 }
 
 StateMatrix next_state(const StateMatrix &state) {
-    StateMatrix new_state{};
-    for (int i = 0; i < map_size; ++i) {
-        for (int j = 0; j < map_size; ++j) {
+    const unsigned long height = state.size();
+    const unsigned long width = state[0].size();
+    auto new_state = StateMatrix(height, std::vector<bool>(width, false));
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
             new_state[i][j] = next_node_state(i, j, state);
         }
     }
     return new_state;
 }
 
-void event_loop(int num_of_iters) {
-    StateMatrix state = init_state();
+void event_loop(int num_of_iters, const int height, const int width) {
+    StateMatrix state = init_state(height, width);
     int iter_count = 0;
-//    print_state(state, iter_count);
+#if !BENCH
+    print_state(state, iter_count);
+#endif
     while (iter_count++ != num_of_iters) {
         state = next_state(state);
-//        print_state(state, iter_count);
+#if !BENCH
+        print_state(state, iter_count);
+#endif
     }
 }
 
 
-void event_loop_omp(int num_of_iters) {
-    StateMatrix state = init_state();
+void event_loop_omp(int num_of_iters, int height, int width) {
+    StateMatrix state = init_state(height, width);
     int iter_count = 0;
-//    print_state(state, iter_count);
     while (iter_count++ != num_of_iters) {
         state = next_state_omp(state);
-//        print_state(state, iter_count);
     }
 }
 
 
 StateMatrix next_state_omp(const StateMatrix &state) {
-    StateMatrix new_state{};
-#pragma omp parallel for
-    for (int i = 0; i < map_size; ++i) {
-        for (int j = 0; j < map_size; ++j) {
+    const unsigned long height = state.size();
+    const unsigned long width = state[0].size();
+    auto new_state = StateMatrix(height, std::vector<bool>(width, false));
+#pragma omp parallel for schedule(dynamic)
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
             new_state[i][j] = next_node_state(i, j, state);
         }
     }
     return new_state;
 }
 
-StateMatrix next_state_mpi(const StateMatrix &state) {
-    StateMatrix new_state{};
-    for (int i = 0; i < map_size; ++i) {
-        for (int j = 0; j < map_size; ++j) {
-            new_state[i][j] = next_node_state(i, j, state);
-        }
-    }
-    return new_state;
-}
+

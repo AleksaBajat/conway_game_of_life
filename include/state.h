@@ -1,21 +1,18 @@
 #ifndef BASE_STATE_H
 #define BASE_STATE_H
-#define MAP_SIZE 10
 
 #include <iostream>
-#include <array>
 #include <fstream>
+#include <vector>
 #include <filesystem>
 #include <thread>
 #include <omp.h>
+#include "mpi.h"
 
-constexpr const char *state_file = "state.txt";
-constexpr int map_size = MAP_SIZE;
-using StateMatrix = std::array<std::array<bool, map_size>, map_size>;
+using StateMatrix = std::vector<std::vector<bool>>;
+StateMatrix init_state(int height, int width);
 
-StateMatrix init_state();
-
-void print_state(const StateMatrix &matrix, int iter_count = -1);
+void print_state(const StateMatrix &state, int iter_count = 0);
 
 int get_neighbour(int i, int j, const StateMatrix &state, int di, int dj);
 
@@ -26,6 +23,7 @@ bool next_node_state(int i, int j, const StateMatrix &state);
 StateMatrix next_state(const StateMatrix &state);
 StateMatrix next_state_omp(const StateMatrix &state);
 
-void event_loop(int num_of_iters);
-void event_loop_omp(int num_of_iters);
+void event_loop(int num_of_iters, int height, int width);
+void event_loop_omp(int num_of_iters, int height, int width);
+void event_loop_mpi(int num_of_iters, int height, int width);
 #endif
