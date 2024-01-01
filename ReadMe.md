@@ -36,5 +36,5 @@ make build
 
 #### MPI 
 ```shell
-mpiexec -np [thread_num] base
+mpiexec -np [process_num] base
 ```
