@@ -1,0 +1,49 @@
+{
+  "benchmarks": [
+    {
+      "results": [{
+        "name": "next state - 100 iter, 100x100",
+        "benchmark_name": "next_state",
+        "samples": 20,
+        "iterations": 100,
+        "estimated_run_time": "4.0448 s",
+        "mean": "22.9366 ms",
+        "low_mean": "9.68664 ms",
+        "high_mean": "75.8354 ms",
+        "std_dev": "57.4864 ms",
+        "low_std_dev": "21.13 us",
+        "high_std_dev": "114.21 ms"
+      }]
+    },
+    {
+      "results": [{
+        "name": "next state - 1000 iter, 100x100",
+        "benchmark_name": "next_state",
+        "samples": 20,
+        "iterations": 1000,
+        "estimated_run_time": "2.36863 s",
+        "mean": "109.937 ms",
+        "low_mean": "96.6049 ms",
+        "high_mean": "163.176 ms",
+        "std_dev": "57.945 ms",
+        "low_std_dev": "241.535 us",
+        "high_std_dev": "115.153 ms"
+      }]
+    },
+    {
+      "results": [{
+        "name": "next state - 100 iter, 1000x1000",
+        "benchmark_name": "next_state",
+        "samples": 20,
+        "iterations": 100,
+        "estimated_run_time": "13.2825 s",
+        "mean": "971.629 ms",
+        "low_mean": "925.305 ms",
+        "high_mean": "1.00269 s",
+        "std_dev": "90.1075 ms",
+        "low_std_dev": "9.98485 ms",
+        "high_std_dev": "156.896 ms"
+      }]
+    }
+  ]
+}

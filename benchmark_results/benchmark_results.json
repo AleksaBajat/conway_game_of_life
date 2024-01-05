@@ -1,0 +1,166 @@
+{
+  "benchmarks": [
+    {
+      "state": "next state - 100 iter, 100x100",
+      "file": "/home/aleksa/Desktop/conway_game_of_life/benchmarks/benchmark.cpp:6",
+      "results": [
+        {
+          "name": "next state - 100 iter, 100x100 sequential",
+          "samples": 20,
+          "iterations": 100,
+          "est_run_time": "134.46 ms",
+          "mean": "6.48924 ms",
+          "low_mean": "6.41508 ms",
+          "high_mean": "6.58137 ms",
+          "std_dev": "187.364 us",
+          "low_std_dev": "145.681 us",
+          "high_std_dev": "218.964 us"
+        },
+        {
+          "name": "next state - 100 iter, 100x100 omp 2",
+          "samples": 20,
+          "iterations": 100,
+          "est_run_time": "88.4579 ms",
+          "mean": "4.49427 ms",
+          "low_mean": "4.47363 ms",
+          "high_mean": "4.52037 ms",
+          "std_dev": "52.6641 us",
+          "low_std_dev": "39.8351 us",
+          "high_std_dev": "75.3802 us"
+        },
+        {
+          "name": "next state - 100 iter, 100x100 omp 4",
+          "samples": 20,
+          "iterations": 100,
+          "est_run_time": "68.4037 ms",
+          "mean": "3.38941 ms",
+          "low_mean": "3.3816 ms",
+          "high_mean": "3.40533 ms",
+          "std_dev": "24.3652 us",
+          "low_std_dev": "8.06738 us",
+          "high_std_dev": "36.974 us"
+        },
+        {
+          "name": "next state - 100 iter, 100x100 omp 8",
+          "samples": 20,
+          "iterations": 100,
+          "est_run_time": "56.8672 ms",
+          "mean": "2.52086 ms",
+          "low_mean": "2.51456 ms",
+          "high_mean": "2.53814 ms",
+          "std_dev": "22.0074 us",
+          "low_std_dev": "8.71286 us",
+          "high_std_dev": "41.7462 us"
+        }
+      ]
+    },
+    {
+      "state": "next state - 1000 iter, 100x100",
+      "file": "/home/aleksa/Desktop/conway_game_of_life/benchmarks/benchmark.cpp:26",
+      "results": [
+        {
+          "name": "next state - 1000 iter, 100x100 sequential",
+          "samples": 20,
+          "iterations": 1000,
+          "est_run_time": "1.27761 s",
+          "mean": "64.2414 ms",
+          "low_mean": "64.1771 ms",
+          "high_mean": "64.4042 ms",
+          "std_dev": "220.652 us",
+          "low_std_dev": "96.8092 us",
+          "high_std_dev": "412.855 us"
+        },
+        {
+          "name": "next state - 1000 iter, 100x100 omp 2",
+          "samples": 20,
+          "iterations": 1000,
+          "est_run_time": "859.591 ms",
+          "mean": "44.1764 ms",
+          "low_mean": "43.7725 ms",
+          "high_mean": "44.5111 ms",
+          "std_dev": "837.894 us",
+          "low_std_dev": "677.024 us",
+          "high_std_dev": "1.03681 ms"
+        },
+        {
+          "name": "next state - 1000 iter, 100x100 omp 4",
+          "samples": 20,
+          "iterations": 1000,
+          "est_run_time": "678.137 ms",
+          "mean": "33.4216 ms",
+          "low_mean": "33.407 ms",
+          "high_mean": "33.4411 ms",
+          "std_dev": "38.1047 us",
+          "low_std_dev": "28.115 us",
+          "high_std_dev": "55.1543 us"
+        },
+        {
+          "name": "next state - 1000 iter, 100x100 omp 8",
+          "samples": 20,
+          "iterations": 1000,
+          "est_run_time": "514.307 ms",
+          "mean": "24.8339 ms",
+          "low_mean": "24.7465 ms",
+          "high_mean": "25.0441 ms",
+          "std_dev": "291.117 us",
+          "low_std_dev": "130.493 us",
+          "high_std_dev": "538.396 us"
+        }
+      ]
+    },
+    {
+      "state": "next state - 100 iter, 1000x1000",
+      "file": "/home/aleksa/Desktop/conway_game_of_life/benchmarks/benchmark.cpp:46",
+      "results": [
+        {
+          "name": "next state - 100 iter, 1000x1000 sequential",
+          "samples": 20,
+          "iterations": 100,
+          "est_run_time": "12.4936 s",
+          "mean": "592.439 ms",
+          "low_mean": "587.406 ms",
+          "high_mean": "600.504 ms",
+          "std_dev": "14.1021 ms",
+          "low_std_dev": "8.09792 ms",
+          "high_std_dev": "18.4291 ms"
+        },
+        {
+          "name": "next state - 100 iter, 1000x1000 omp 2",
+          "samples": 20,
+          "iterations": 100,
+          "est_run_time": "5.83153 s",
+          "mean": "290.87 ms",
+          "low_mean": "290.576 ms",
+          "high_mean": "291.189 ms",
+          "std_dev": "701.412 us",
+          "low_std_dev": "550.83 us",
+          "high_std_dev": "910.858 us"
+        },
+        {
+          "name": "next state - 100 iter, 1000x1000 omp 4",
+          "samples": 20,
+          "iterations": 100,
+          "est_run_time": "3.07559 s",
+          "mean": "153.525 ms",
+          "low_mean": "153.477 ms",
+          "high_mean": "153.578 ms",
+          "std_dev": "114.737 us",
+          "low_std_dev": "89.9719 us",
+          "high_std_dev": "152.188 us"
+        },
+        {
+          "name": "next state - 100 iter, 1000x1000 omp 8",
+          "samples": 20,
+          "iterations": 100,
+          "est_run_time": "2.11471 s",
+          "mean": "105.723 ms",
+          "low_mean": "105.677 ms",
+          "high_mean": "105.818 ms",
+          "std_dev": "146.252 us",
+          "low_std_dev": "77.8786 us",
+          "high_std_dev": "258.753 us"
+        }
+      ]
+    }
+  ]
+}

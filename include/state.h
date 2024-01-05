@@ -25,5 +25,4 @@ StateMatrix next_state_omp(const StateMatrix &state);
 
 void event_loop(int num_of_iters, int height, int width);
 void event_loop_omp(int num_of_iters, int height, int width);
-void event_loop_mpi(int num_of_iters, int height, int width);
 #endif

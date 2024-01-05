@@ -26,4 +26,5 @@ build:
 clean:
 	@echo "Removing Catch2 from $(LIB_DIR)"
 	@rm -rf $(LIB_DIR)/Catch2
+	@rm -rf $(BUILD_DIR)
 
