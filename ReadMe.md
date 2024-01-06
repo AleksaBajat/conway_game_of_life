@@ -6,9 +6,10 @@
 - MPI
 
 ## Benchmarks
-Benchmarks for single threaded and OpenMP implementations are configured through 'Catch2' framework, while MPI due to it's nature to completely change the way the code is being written and executed is benchmarked through ```std::chrono::system_clock```.
+Benchmarks are configured through 'Catch2' framework.
 
-## Tests
+## Unit tests
+Tests are configured through 'Catch2' framework.
 - Next Board State
 - Number of Node Neighbours
 
@@ -23,18 +24,31 @@ make setup
 make build
 ```
 
-### Running a (run from cmake-build-release directory)
-#### Tests
+## (run from cmake-build-release directory)
+### Running a specific implementation 
+
+#### Sequential && OpenMP Parallel For && OpenMP Parallel Task
 ```shell
-./tests
+./base [--openmp] [--openmpt]
 ```
 
-#### Benchmarks (Single thread && OpenMP) 
+#### MPI
+```shell
+mpiexec -np [number_of_processes] ./base --mpi
+```
+
+### Benchmarks 
+#### Sequential && OpenMP
 ```shell
 ./benchmarks
 ```
 
-#### MPI 
+#### MPI
 ```shell
-mpiexec -np [process_num] base
+mpiexec -np [number_of_processes] ./benchmarks-mpi
+```
+
+### Unit tests
+```shell
+./tests
 ```

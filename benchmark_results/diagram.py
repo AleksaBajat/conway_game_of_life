@@ -3,6 +3,21 @@ import json
 from logging import info
 from itertools import groupby
 
+def convert_to_ms(value_list):
+    result_list = []
+    for value in value_list:
+        split = value.split(' ')
+        val  = split[0]
+        size = split[1]
+        if(size == "us"):
+            result_list.append(str(float(val)/1000) + " ms")
+        if(size == "s"):
+            result_list.append(str(float(val)*1000) + " ms")
+        else:
+            result_list.append(value)
+
+    return result_list
+
 
 def parse_data(data):
     names = []
@@ -15,6 +30,9 @@ def parse_data(data):
             means.append(result['mean'])
             std_devs.append(result['std_dev'])
 
+
+    means = convert_to_ms(means)
+    std_devs = convert_to_ms(std_devs)
 
     return names, means, std_devs
 

@@ -120,8 +120,14 @@ void event_loop(int num_of_iters, const int height, const int width) {
 void event_loop_omp(int num_of_iters, int height, int width) {
     StateMatrix state = init_state(height, width);
     int iter_count = 0;
+#if !BENCH
+    print_state(state, iter_count);
+#endif
     while (iter_count++ != num_of_iters) {
         state = next_state_omp(state);
+#if !BENCH
+        print_state(state, iter_count);
+#endif
     }
 }
 
@@ -142,8 +148,14 @@ StateMatrix next_state_omp(const StateMatrix &state) {
 void event_loop_omp_task(int num_of_iters, int height, int width) {
     StateMatrix state = init_state(height, width);
     int iter_count = 0;
+#if !BENCH
+    print_state(state, iter_count);
+#endif
     while (iter_count++ != num_of_iters) {
         state = next_state_omp_task(state);
+#if !BENCH
+        print_state(state, iter_count);
+#endif
     }
 }
 

@@ -1,49 +1,130 @@
 {
   "benchmarks": [
     {
-      "results": [{
-        "name": "mpi_6 100i-100x100",
-        "benchmark_name": "next_state",
-        "samples": 20,
-        "iterations": 100,
-        "estimated_run_time": "4.0448 s",
-        "mean": "22.9366 ms",
-        "low_mean": "9.68664 ms",
-        "high_mean": "75.8354 ms",
-        "std_dev": "57.4864 ms",
-        "low_std_dev": "21.13 us",
-        "high_std_dev": "114.21 ms"
-      }]
+      "results": [
+        {
+          "name": "mpi_6 100i-100x100",
+          "samples": 20,
+          "iterations": 100,
+          "estimated_run_time": "4.0448 s",
+          "mean": "32.9247 ms",
+          "low_mean": "15.9059 ms",
+          "high_mean": "117.088 ms",
+          "std_dev": "73.5429 ms",
+          "low_std_dev": "413.81 us",
+          "high_std_dev": "146.127 ms"
+        },
+        {
+          "name": "mpi_2 100i-100x100",
+          "samples": 20,
+          "iterations": 100,
+          "estimated_run_time": "236.567 ms",
+          "mean": "11.9857 ms",
+          "low_mean": "11.8963 ms",
+          "high_mean": "11.9842 ms",
+          "std_dev": "99.4865 us",
+          "low_std_dev": "73.1939 us",
+          "high_std_dev": "130.226 us"
+        },
+        {
+          "name": "mpi_4 100i-100x100",
+          "samples": 20,
+          "iterations": 100,
+          "estimated_run_time": "196.994 ms",
+          "mean": "10.1985 ms",
+          "low_mean": "9.82638 ms",
+          "high_mean": "11.6457 ms",
+          "std_dev": "1.54509 ms",
+          "low_std_dev": "103.296 us",
+          "high_std_dev": "3.07311 ms"
+        }
+      ]
     },
     {
-      "results": [{
-        "name": "mpi_6 1000i-100x100",
-        "benchmark_name": "next_state",
-        "samples": 20,
-        "iterations": 1000,
-        "estimated_run_time": "2.36863 s",
-        "mean": "109.937 ms",
-        "low_mean": "96.6049 ms",
-        "high_mean": "163.176 ms",
-        "std_dev": "57.945 ms",
-        "low_std_dev": "241.535 us",
-        "high_std_dev": "115.153 ms"
-      }]
+      "results": [
+        {
+          "name": "mpi_6 1000i-100x100",
+          "benchmark_name": "next_state",
+          "samples": 20,
+          "iterations": 1000,
+          "estimated_run_time": "4.38058",
+          "mean": "181.663 ms",
+          "low_mean": "163.97 ms",
+          "high_mean": "248.545 ms",
+          "std_dev": "72.9568 ms",
+          "low_std_dev": "5.48755 ms",
+          "high_std_dev": "145.727 ms"
+        },
+        {
+          "name": "mpi_2 1000i-100x100",
+          "benchmark_name": "next_state",
+          "samples": 20,
+          "iterations": 1000,
+          "estimated_run_time": "2.38944 s",
+          "mean": "119.35 ms",
+          "low_mean": "118.859 ms",
+          "high_mean": "120.092 ms",
+          "std_dev": "1.3686 ms",
+          "low_std_dev": "916.735 ms",
+          "high_std_dev": "120.092 ms"
+        },
+        {
+          "name": "mpi_4 1000i-100x100",
+          "benchmark_name": "next_state",
+          "samples": 20,
+          "iterations": 1000,
+          "estimated_run_time": "1.9482 s",
+          "mean": "98.2683 ms",
+          "low_mean": "97.8352 ms",
+          "high_mean": "99.427 ms",
+          "std_dev": "1.50743 ms",
+          "low_std_dev": "609.645 us",
+          "high_std_dev": "2.81386 ms"
+        }
+      ]
     },
     {
-      "results": [{
-        "name": "mpi_6 100i-1000x1000",
-        "benchmark_name": "next_state",
-        "samples": 20,
-        "iterations": 100,
-        "estimated_run_time": "13.2825 s",
-        "mean": "971.629 ms",
-        "low_mean": "925.305 ms",
-        "high_mean": "1.00269 s",
-        "std_dev": "90.1075 ms",
-        "low_std_dev": "9.98485 ms",
-        "high_std_dev": "156.896 ms"
-      }]
+      "results": [
+        {
+          "name": "mpi_6 100i-1000x1000",
+          "benchmark_name": "next_state",
+          "samples": 20,
+          "iterations": 100,
+          "estimated_run_time": "16.6128 ms",
+          "mean": "1.55464 s",
+          "low_mean": "1.43255 s",
+          "high_mean": "1.6166 s",
+          "std_dev": "191.694 ms",
+          "low_std_dev": "81.7849 ms",
+          "high_std_dev": "351.569 ms"
+        },
+        {
+          "name": "mpi_2 100i-1000x1000",
+          "benchmark_name": "next_state",
+          "samples": 20,
+          "iterations": 100,
+          "estimated_run_time": "22.3985",
+          "mean": "1.15492 s",
+          "low_mean": "1.13438 s",
+          "high_mean": "1.18292 s",
+          "std_dev": "54.6048 ms",
+          "low_std_dev": "40.1612 ms",
+          "high_std_dev": "78.6154 ms"
+        },
+        {
+          "name": "mpi_4 100i-1000x1000",
+          "benchmark_name": "next_state",
+          "samples": 20,
+          "iterations": 1,
+          "estimated_run_time": "20.0649 s",
+          "mean": "994.654 ms",
+          "low_mean": "991.144 ms",
+          "high_mean": "1.00417 s",
+          "std_dev": "12.1525 ms",
+          "low_std_dev": "4.54836 ms",
+          "high_std_dev": "22.7294 ms"
+        }
+      ]
     }
   ]
 }
