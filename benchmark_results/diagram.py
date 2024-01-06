@@ -1,6 +1,7 @@
 import plotly.graph_objects as go
 import json
 from logging import info
+from itertools import groupby
 
 
 def parse_data(data):
@@ -18,14 +19,22 @@ def parse_data(data):
     return names, means, std_devs
 
 
-def sort_data(names, means, std_devs, names_mpi, means_mpi, std_devs_mpi):
+def format_data(names, means, std_devs, names_mpi, means_mpi, std_devs_mpi):
     r_names = names + names_mpi
+    r_types = [name.split(' ')[1] for name in r_names]
     r_means = means + means_mpi
     r_means = [float(mean.split(' ')[0]) for mean in r_means]
     r_std_devs = std_devs + std_devs_mpi
 
-    r_means, r_names, r_std_devs = zip(*sorted(zip(r_means, r_names, r_std_devs)))
-    return r_names, r_means, r_std_devs
+    zipped = zip(r_means, r_names, r_std_devs, r_types)
+    zipped_sorted = sorted(zipped, key=lambda x: x[3])
+
+    grouped = {key: list(group) for key, group in groupby(zipped_sorted, key=lambda x: x[3])}
+
+    for r_type, group in grouped.items():
+        grouped[r_type] = sorted(group, key=lambda x:x[0])
+
+    return grouped
 
 
 benchmark_file = open("benchmark_results.json")
@@ -37,27 +46,38 @@ benchmark_results_mpi = json.load(benchmark_file_mpi)
 names, means, std_devs = parse_data(benchmark_results)
 names_mpi, means_mpi, std_devs_mpi = parse_data(benchmark_results_mpi)
 
-r_names, r_means, r_std_devs = sort_data(names, means, std_devs, names_mpi, means_mpi, std_devs_mpi)
-
-print(r_means)
+groups = format_data(names, means, std_devs, names_mpi, means_mpi, std_devs_mpi)
 
 fig = go.Figure()
 
-fig.add_trace(go.Scatter(
-    x=r_names,
-    y=r_means,
-    error_y=dict(type='data', array=r_std_devs),
-    mode='markers',
-    name='benchmarks'
-))
+for r_type, group in groups.items():
+    r_means_group, r_names_group, r_std_devs_group, _ = zip(*group)
 
+    fig.add_trace(go.Scatter(
+        x=r_names_group,
+        y=r_means_group,
+        error_y=dict(type='data', array=r_std_devs_group),
+        mode='markers',
+        name=f'{r_type}',
+        marker=dict(size=16)
+    ))
 
 fig.update_layout(
-        title='Benchmark comparison',
-        xaxis_title='Benchmark Name',
-        yaxis_title='Mean Time (ms)',
-        legend_title='Benchmark Type'
+    title='Benchmark comparison',
+    title_font_size=24,
+    xaxis=dict(
+        title='Benchmark Name',
+        title_font=dict(size=24),
+        tickfont=dict(size=20)
+    ),
+    yaxis=dict(
+        title='Mean Time (ms)',
+        title_font=dict(size=24),
+        tickfont=dict(size=20)
+    ),
+    legend_title='Benchmark Type',
+    legend_title_font_size=16,
+    legend_font_size=14,
 )
 
 fig.show()
-

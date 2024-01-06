@@ -2,7 +2,7 @@
   "benchmarks": [
     {
       "results": [{
-        "name": "next state - 100 iter, 100x100",
+        "name": "mpi_6 100i-100x100",
         "benchmark_name": "next_state",
         "samples": 20,
         "iterations": 100,
@@ -17,7 +17,7 @@
     },
     {
       "results": [{
-        "name": "next state - 1000 iter, 100x100",
+        "name": "mpi_6 1000i-100x100",
         "benchmark_name": "next_state",
         "samples": 20,
         "iterations": 1000,
@@ -32,7 +32,7 @@
     },
     {
       "results": [{
-        "name": "next state - 100 iter, 1000x1000",
+        "name": "mpi_6 100i-1000x1000",
         "benchmark_name": "next_state",
         "samples": 20,
         "iterations": 100,

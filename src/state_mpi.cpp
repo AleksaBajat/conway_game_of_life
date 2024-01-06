@@ -2,13 +2,6 @@
 #include "mpi.h"
 #include "../include/state_mpi.h"
 
-std::chrono::time_point<std::chrono::system_clock> start_timer(int rank) {
-    if(rank == 0){
-        return std::chrono::system_clock::now();
-    }
-    return {};
-}
-
 int calculate_rows(int rank, int size, int height) {
     if(rank != size - 1){
         return height / size;
@@ -22,17 +15,14 @@ void event_loop_mpi(int height, int width, int num_of_iter) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    auto time_start = start_timer(rank);
-
     StateMatrix state = init_state(height, width);
-    int rows_to_do = calculate_rows(rank, size, height);
 
     for(int i=0; i < num_of_iter ; i++){
-        StateMatrix state_part = process_part(rank, width, height/size, rows_to_do, state);
+        StateMatrix state_part = process_part(rank, size, height, width, state);
         std::vector<int> flattened = flatten_data(state_part);
         int flattened_size = static_cast<int>(flattened.size());
 
-        std::vector<int> data_sizes(size);  // size is the number of processes
+        std::vector<int> data_sizes(size);
         std::vector<int> displacements(size);
 
         MPI_Gather(&flattened_size, 1, MPI_INT, data_sizes.data(), 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -61,39 +51,29 @@ void event_loop_mpi(int height, int width, int num_of_iter) {
 
 #if !BENCH
         if(rank == 0){
-//            print_state(state, i);
-            std::cout << "ITER " << i << std::endl;
+            print_state(state, i);
         }
 #endif
 
-        std::vector<int> fd;
+        std::vector<int> flat_data;
         if(rank == 0){
-            fd = flatten_data(state);
+            flat_data = flatten_data(state);
         }
 
-        int fs = static_cast<int>(fd.size());
+        int fs = static_cast<int>(flat_data.size());
 
         MPI_Bcast(&fs, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
         if(rank != 0){
-            fd.resize(fs);
+            flat_data.resize(fs);
         }
 
-        MPI_Bcast(fd.data(), fs, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Bcast(flat_data.data(), fs, MPI_INT, 0, MPI_COMM_WORLD);
 
         if(rank != 0){
             state = {};
-            load_rows(state, fd, fs);
+            load_rows(state, flat_data, fs);
         }
-    }
-
-
-    if(rank == 0){
-        auto time_end = std::chrono::system_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start);
-#if !BENCH
-        std::cout << "Elapsed time: " << elapsed.count() << std::endl;
-#endif
     }
 }
 
@@ -122,7 +102,10 @@ void load_rows(StateMatrix &state, const std::vector<int> &flat_data, int flat_s
     }
 }
 
-StateMatrix process_part(int rank, int width, int regular_segment, int num_of_rows, const StateMatrix& state){
+
+StateMatrix process_part(int rank, int size, int height, int width, const StateMatrix &state) {
+    int num_of_rows = calculate_rows(rank, size, height);
+    int regular_segment = height/size;
     StateMatrix state_part{};
     for(int i=rank*regular_segment; i < rank * regular_segment + num_of_rows; i++){
         std::vector<bool> inner{};

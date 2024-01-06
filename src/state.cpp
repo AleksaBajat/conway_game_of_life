@@ -125,7 +125,6 @@ void event_loop_omp(int num_of_iters, int height, int width) {
     }
 }
 
-
 StateMatrix next_state_omp(const StateMatrix &state) {
     const unsigned long height = state.size();
     const unsigned long width = state[0].size();
@@ -136,6 +135,39 @@ StateMatrix next_state_omp(const StateMatrix &state) {
             new_state[i][j] = next_node_state(i, j, state);
         }
     }
+    return new_state;
+}
+
+
+void event_loop_omp_task(int num_of_iters, int height, int width) {
+    StateMatrix state = init_state(height, width);
+    int iter_count = 0;
+    while (iter_count++ != num_of_iters) {
+        state = next_state_omp_task(state);
+    }
+}
+
+
+StateMatrix next_state_omp_task(const StateMatrix &state) {
+    const unsigned long height = state.size();
+    const unsigned long width = state[0].size();
+    auto new_state = StateMatrix(height, std::vector<bool>(width, false));
+
+#pragma omp parallel
+    {
+#pragma omp single
+        {
+            for (int i = 0; i < height; ++i) {
+#pragma omp task firstprivate(i)
+                {
+                    for (int j = 0; j < width; ++j) {
+                        new_state[i][j] = next_node_state(i, j, state);
+                    }
+                }
+            }
+        }
+    }
+
     return new_state;
 }
 
